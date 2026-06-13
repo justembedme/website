@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JustEmbedMe — Frontier open-source embeddings, hosted</title>
+<meta name="description" content="Better-than-OpenAI open-source embeddings on one OpenAI-compatible endpoint. Pay by the token, by card or USDC. Open weights you could run yourself — so you never have to." />
+<meta name="theme-color" content="#0a0a1a" />
+<!-- Open Graph -->
+<meta property="og:title" content="JustEmbedMe — Frontier open-source embeddings, hosted" />
+<meta property="og:description" content="The embeddings API you could run yourself — so you never have to." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://justembedme.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="JustEmbedMe — Frontier open-source embeddings, hosted" />
+<meta name="twitter:description" content="The embeddings API you could run yourself — so you never have to." />
+<meta name="twitter:image" content="https://justembedme.com/og-image.png" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232d5bff'/%3E%3Cg fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 9 L7 16 L12 23'/%3E%3Cpath d='M20 9 L25 16 L20 23'/%3E%3C/g%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg:#08081a; --bg2:#0d0d24; --panel:#101030; --panel2:#13133a;
+    --ink:#eef0ff; --muted:#9aa0c4; --faint:#6b709a;
+    --blue:#3d6bff; --blue2:#6f8dff; --green:#36d399; --line:rgba(255,255,255,.08);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  .bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(60rem 40rem at 70% -10%, rgba(61,107,255,.22), transparent 60%),
+      radial-gradient(50rem 40rem at 10% 10%, rgba(111,141,255,.10), transparent 55%),
+      radial-gradient(40rem 30rem at 50% 110%, rgba(54,211,153,.07), transparent 60%);
+  }
+  .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 24px}
+  a{color:inherit;text-decoration:none}
+
+  /* Nav */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0;gap:16px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:-.2px;font-size:18px}
+  .mark{width:30px;height:30px;border-radius:8px;flex:none}
+  .brand .me{color:var(--blue2)}
+  .nav-right{display:flex;align-items:center;gap:20px;font-size:14px;color:var(--muted)}
+  .nav-right a:hover{color:var(--ink)}
+  .pill{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;
+    color:var(--green);background:rgba(54,211,153,.10);border:1px solid rgba(54,211,153,.28);
+    padding:5px 11px;border-radius:999px;letter-spacing:.3px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(54,211,153,.5);animation:pulse 2.2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(54,211,153,.45)}70%{box-shadow:0 0 0 7px rgba(54,211,153,0)}100%{box-shadow:0 0 0 0 rgba(54,211,153,0)}}
+
+  /* Hero */
+  header{padding:70px 0 40px}
+  .eyebrow{font-family:var(--mono);font-size:13px;color:var(--blue2);letter-spacing:.5px;margin-bottom:20px}
+  h1{font-size:clamp(34px,6vw,60px);line-height:1.05;letter-spacing:-1.5px;font-weight:800;max-width:16ch}
+  h1 .accent{color:var(--blue2);
+    background:linear-gradient(90deg,var(--blue2),var(--green));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{margin-top:24px;font-size:clamp(16px,2.2vw,20px);color:var(--muted);max-width:60ch}
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:15px;
+    padding:13px 22px;border-radius:11px;transition:.18s;border:1px solid transparent}
+  .btn-primary{background:var(--blue);color:#fff;box-shadow:0 8px 30px rgba(61,107,255,.35)}
+  .btn-primary:hover{background:#4f79ff;transform:translateY(-1px)}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
+  .btn-ghost:hover{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.05)}
+  .cta-note{font-size:13px;color:var(--faint);font-family:var(--mono)}
+
+  /* Code card */
+  .code-card{margin-top:48px;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    background:linear-gradient(180deg,var(--panel2),var(--panel));box-shadow:0 24px 60px rgba(0,0,0,.45)}
+  .code-head{display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.2)}
+  .tl{width:11px;height:11px;border-radius:50%}
+  .tl.r{background:#ff5f57}.tl.y{background:#febc2e}.tl.g{background:#28c840}
+  .code-title{margin-left:8px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+  .copy{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);background:rgba(255,255,255,.04);
+    border:1px solid var(--line);padding:5px 10px;border-radius:7px;cursor:pointer;transition:.15s}
+  .copy:hover{color:var(--ink);border-color:rgba(255,255,255,.2)}
+  pre{padding:20px 18px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;line-height:1.7}
+  .c-cmd{color:#7fe1b0}.c-flag{color:var(--blue2)}.c-str{color:#e8c07d}.c-key{color:#c8a6ff}.c-punc{color:var(--faint)}
+
+  /* Sections */
+  section{padding:60px 0}
+  .kicker{font-family:var(--mono);font-size:12px;color:var(--blue2);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+  h2{font-size:clamp(24px,3.5vw,34px);letter-spacing:-.6px;font-weight:750;line-height:1.15}
+  .lead{color:var(--muted);font-size:17px;max-width:62ch;margin-top:16px}
+
+  /* Stat strip */
+  .stats{display:flex;flex-wrap:wrap;gap:14px;margin:34px 0 0}
+  .stat{flex:1 1 200px;border:1px solid var(--line);border-radius:14px;padding:20px;background:rgba(255,255,255,.015)}
+  .stat .n{font-size:30px;font-weight:800;letter-spacing:-.5px}
+  .stat .n.up{color:var(--green)}
+  .stat .l{color:var(--faint);font-size:13.5px;margin-top:4px;font-family:var(--mono)}
+
+  /* Pillars */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  .card{border:1px solid var(--line);border-radius:16px;padding:26px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.005));transition:.2s}
+  .card:hover{border-color:rgba(111,141,255,.35);transform:translateY(-3px)}
+  .card .ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    background:rgba(61,107,255,.14);border:1px solid rgba(61,107,255,.3);margin-bottom:16px}
+  .card h3{font-size:18px;font-weight:700;letter-spacing:-.2px}
+  .card p{color:var(--muted);font-size:14.5px;margin-top:10px}
+
+  /* Manifesto */
+  .manifesto{border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:14px;
+    padding:34px;background:rgba(61,107,255,.05);margin-top:8px}
+  .manifesto p{font-size:clamp(17px,2.4vw,21px);line-height:1.55;color:var(--ink);font-weight:500}
+  .manifesto .sig{margin-top:18px;font-family:var(--mono);font-size:13px;color:var(--faint)}
+
+  /* Footer */
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:40px 0 60px;color:var(--faint);font-size:14px}
+  .foot-row{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between}
+  .foot-links{display:flex;gap:20px;flex-wrap:wrap}
+  .foot-links a:hover{color:var(--ink)}
+  .disclaimer{margin-top:18px;font-size:12px;color:var(--faint);max-width:70ch;line-height:1.5}
+
+  @media(max-width:780px){
+    .grid{grid-template-columns:1fr}
+    header{padding:48px 0 24px}
+    .nav-right .hide-sm{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="wrap">
+
+  <nav>
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#3d6bff"/><g fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9 L7 16 L12 23"/><path d="M20 9 L25 16 L20 23"/></g></svg>
+      <span>Just<span class="me">EmbedMe</span></span>
+    </div>
+    <div class="nav-right">
+      <a class="hide-sm" href="#why">Why</a>
+      <a class="hide-sm" href="#pillars">Approach</a>
+      <a href="https://github.com/orgs/justembedme" target="_blank" rel="noopener">GitHub</a>
+      <span class="pill"><span class="dot"></span>COMING SOON</span>
+    </div>
+  </nav>
+
+  <header>
+    <div class="eyebrow">// frontier open-source embeddings, hosted</div>
+    <h1>The embeddings API you could run yourself — <span class="accent">so you never have to.</span></h1>
+    <p class="sub">Better-than-OpenAI open-source models on one OpenAI-compatible endpoint. Pay by the token, by card or USDC. The weights are open and permanent — so your retrieval pipeline keeps working, no matter what.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:hello@justembedme.com?subject=JustEmbedMe%20early%20access">Get early access →</a>
+      <a class="btn btn-ghost" href="https://github.com/orgs/justembedme" target="_blank" rel="noopener">View on GitHub</a>
+      <span class="cta-note">launching soon · built by engineers who needed it</span>
+    </div>
+
+    <div class="code-card">
+      <div class="code-head">
+        <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+        <span class="code-title">one base-url swap from OpenAI</span>
+        <button class="copy" id="copyBtn">Copy</button>
+      </div>
+<pre id="code"><span class="c-cmd">curl</span> https://api.justembedme.com/v1/embeddings <span class="c-punc">\</span>
+  <span class="c-flag">-H</span> <span class="c-str">"Authorization: Bearer $JUSTEMBEDME_KEY"</span> <span class="c-punc">\</span>
+  <span class="c-flag">-d</span> <span class="c-str">'{</span>
+<span class="c-str">    </span><span class="c-key">"model"</span><span class="c-str">: </span><span class="c-str">"microsoft/harrier-oss-v1-0.6b"</span><span class="c-str">,</span>
+<span class="c-str">    </span><span class="c-key">"input"</span><span class="c-str">: </span><span class="c-str">"Embeddings that outlive their provider."</span>
+<span class="c-str">  }'</span></pre>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n up">#1</div><div class="l">Harrier on multilingual MTEB-v2</div></div>
+      <div class="stat"><div class="n">69.0<span style="color:var(--faint);font-size:15px"> vs 64.6</span></div><div class="l">Harrier 0.6B vs OpenAI 3-large</div></div>
+      <div class="stat"><div class="n">MIT</div><div class="l">open weights · yours forever</div></div>
+    </div>
+  </header>
+
+  <section id="why">
+    <div class="kicker">Why we exist</div>
+    <h2>We just wanted to use the best models. So we hosted them.</h2>
+    <p class="lead">The best embedding models today are open source. OpenAI hasn't shipped a new one in years. Google's are excellent — but their long track record of quietly retiring products makes betting your vector index on them a risk we won't take. Open weights are the safest way to know your RAG pipeline and embeddings dataset stay robust for the long haul.</p>
+    <p class="lead" style="margin-top:16px">The catch is that hosting these models is expensive. So we figured: let us host it for you. The day you'd rather run your own, do it — we'll hand you the exact specs we run and what they cost us, no secrets. And if you're not there yet? No problem. Skip the monthly GPU bill.</p>
+    <div class="manifesto" style="margin-top:32px">
+      <p>Save yourself the cost, the ops, and the lock-in — and just embed me.</p>
+      <div class="sig">— built by engineers · a product of Joza Solutions LLC</div>
+    </div>
+  </section>
+
+  <section id="pillars" style="padding-top:20px">
+    <div class="kicker">The approach</div>
+    <h2>Quality you'd choose, stability you can count on.</h2>
+    <p class="lead">Most new RAG pipelines default to OpenAI because it's hosted and easy — and quietly give up retrieval quality and long-term control. We fix both.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6f8dff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <h3>Frontier open quality</h3>
+        <p>We host the best open models the day they land — starting with Microsoft Harrier, #1 on multilingual MTEB. Better retrieval than the OpenAI defaults, MIT-licensed, multi-model, no lock-in.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6f8dff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>No forced migrations</h3>
+        <p>Closed providers deprecate models and orphan your entire vector index. Ours are open-weight and permanent — the model is yours to keep, so you can run the exact same one yourself anytime and keep producing identical vectors, forever.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6f8dff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/></svg></div>
+        <h3>Agent-native</h3>
+        <p>Discoverable and pay-per-call for autonomous agents: USDC over x402, an MCP tool, machine-readable pricing. Built for the agentic economy from day one — not just humans with dashboards.</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:10px">
+    <div class="manifesto" style="border-left-color:var(--green);background:rgba(54,211,153,.05)">
+      <p style="font-size:18px;font-weight:500">Radical transparency: we publish the exact guide to self-host these models, and we publish what it costs us to run them. The escape hatch isn't a marketing line — it's a link.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-row">
+      <div class="brand" style="font-size:16px">
+        <svg class="mark" style="width:26px;height:26px" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#3d6bff"/><g fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9 L7 16 L12 23"/><path d="M20 9 L25 16 L20 23"/></g></svg>
+        <span>Just<span class="me">EmbedMe</span></span>
+      </div>
+      <div class="foot-links">
+        <a href="mailto:hello@justembedme.com">hello@justembedme.com</a>
+        <a href="https://github.com/orgs/justembedme" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://huggingface.co/justembedme" target="_blank" rel="noopener">Hugging Face</a>
+      </div>
+    </div>
+    <div class="disclaimer">
+      © 2026 Joza Solutions LLC. JustEmbedMe is a product of Joza Solutions LLC. Not affiliated with, or endorsed by, the MTEB benchmark or its maintainers.
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var btn=document.getElementById('copyBtn');
+    var code="curl https://api.justembedme.com/v1/embeddings \\\n  -H \"Authorization: Bearer $JUSTEMBEDME_KEY\" \\\n  -d '{\n    \"model\": \"microsoft/harrier-oss-v1-0.6b\",\n    \"input\": \"Embeddings that outlive their provider.\"\n  }'";
+    btn.addEventListener('click',function(){
+      navigator.clipboard.writeText(code).then(function(){
+        btn.textContent='Copied ✓';
+        setTimeout(function(){btn.textContent='Copy';},1600);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

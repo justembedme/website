@@ -1,0 +1,29 @@
+# JustEmbedMe
+
+> Hosted, OpenAI-compatible API for frontier open-source text embedding models. Better-than-OpenAI retrieval quality, billed per token, payable by card or USDC. Because the weights are open and permanent, your vector index can never be orphaned by a model deprecation — and you can always self-host the exact same model. Status: launching soon.
+
+JustEmbedMe is a product of Joza Solutions LLC. It hosts state-of-the-art open-source embedding models behind a single OpenAI-compatible endpoint, so existing clients work with a base-URL swap.
+
+## Why it exists
+The best embedding models today are open source. OpenAI hasn't shipped a new embeddings model in years, and Google's — while excellent — come from a company with a long track record of retiring products, making them a risky foundation for a long-lived vector index. Open weights are the safest way to keep a RAG pipeline or embeddings dataset robust over time. Hosting these models is expensive, so JustEmbedMe hosts them for you. When you're ready to self-host, we publish the exact specs we run and what they cost. Until then, you skip the monthly GPU bill.
+
+## What it offers
+- OpenAI-compatible endpoint: POST https://api.justembedme.com/v1/embeddings
+- Models: microsoft/harrier-oss-v1-0.6b (#1 on multilingual MTEB-v2, MIT-licensed); more open models to follow
+- Pricing: simple per-token, published transparently; free tier to try
+- Payment: card (Stripe) or USDC micropayments for agents (x402 on Base)
+- Durability: every model is open-weight and permanent; self-host guide and cost breakdown provided
+
+## For AI agents
+- Discoverable via x402 Bazaar / Agentic.Market and as an MCP tool
+- Pay-per-call in USDC over HTTP 402 — no account required
+- Machine-readable pricing and OpenAPI spec at launch
+
+## Links
+- Site: https://justembedme.com
+- GitHub: https://github.com/orgs/justembedme
+- Hugging Face: https://huggingface.co/justembedme
+- Contact: hello@justembedme.com
+
+## Notes
+- Not affiliated with, or endorsed by, the MTEB benchmark or its maintainers.
