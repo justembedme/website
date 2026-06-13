@@ -9,7 +9,7 @@ The best embedding models today are open source. OpenAI hasn't shipped a new emb
 
 ## What it offers
 - OpenAI-compatible endpoint: POST https://api.justembedme.com/v1/embeddings
-- Models: microsoft/harrier-oss-v1-0.6b — 596M params, 32k context, 100+ languages, MIT-licensed. A top-tier small open model: at release it sat around #10 on the Multilingual MTEB v2 leaderboard (~69.0 Mean(Task)), ahead of OpenAI's text-embedding-3-small (~64) on the same board. Larger Harrier variants available, up to harrier-oss-v1-27b. More open models to follow.
+- Models: microsoft/harrier-oss-v1-0.6b — 596M params, 100+ languages, MIT-licensed. A top-tier small open model: at release it sat around #10 on the Multilingual MTEB v2 leaderboard (~69.0 Mean(Task)), ahead of OpenAI's text-embedding-3-small (~64) on the same board. Larger Harrier variants available, up to harrier-oss-v1-27b. More open models to follow.
 - Note: leaderboard ranks and scores change over time — see the live MTEB leaderboard (https://huggingface.co/spaces/mteb/leaderboard) for current numbers.
 - Pricing: simple per-token, published transparently; free tier to try
 - Payment: card (Stripe) or USDC micropayments for agents (x402 on Base)
